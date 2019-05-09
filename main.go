@@ -1,7 +1,19 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"log"
+	"net/http"
+)
 
-func main(){
-  fmt.Println("main running")
+
+type helloHandler struct{}
+
+func (h helloHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "hello, you've hit %s\n", r.URL.Path)
+}
+
+func main() {
+	err := http.ListenAndServe(":9999", helloHandler{})
+	log.Fatal(err)
 }
